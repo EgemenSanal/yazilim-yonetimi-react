@@ -47,8 +47,8 @@ const KitapEklemeSchema = yup.object({
     .number()
     .required("Yaş sınırı zorunludur")
     .integer("Yaş sınırı tam sayı olmalıdır")
-    .min(0, "Yaş sınırı negatif olamaz")
-    .boolean("+18 yaş için mi "),
+    .min(0, "Yaş sınırı negatif olamaz"),
+  
 });
 
 export default KitapEklemeSchema;
