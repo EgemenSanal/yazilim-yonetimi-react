@@ -3,12 +3,13 @@ import { useFormik } from 'formik';
 import axios from 'axios';
 import { Loginyupp } from './schemas/Loginyupp';
 import { useNavigate } from 'react-router-dom';
+import './assets/login.css';
 
 function Login() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const { values, errors, handleChange, handleBlur, handleSubmit } = useFormik({
+  const { values, errors, touched, handleChange, handleBlur, handleSubmit } = useFormik({
     initialValues: {
       email: "",
       password: "",
@@ -19,14 +20,17 @@ function Login() {
       try {
         const response = await axios.post("/login", values);
         
-        const { token } = response.data;
-        localStorage.setItem('jwt_token', token); 
+        const { token, role } = response.data;
+        localStorage.setItem('jwt_token', token);
 
-      
-        navigate("/Adminlogin"); // Admin login paneline yönlendiriyoruz
+        if (role === "a") {
+          navigate("/Adminlogin");
+        } else {
+          navigate("/Anasayfa");
+        }
       } catch (error) {
         console.log("Hata var", error);
-        
+
         if (error.response && error.response.status === 404) {
           alert("Hesap bulunamadı! Kayıt olmanız gerek.");
           navigate("/register");
@@ -52,32 +56,35 @@ function Login() {
 
   return (
     <>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="loginform">
+        <p className="logintitle">Login</p>
         <div>
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            value={values.email}
-            onChange={handleChange}
-            onBlur={handleBlur}
-          />
-          {errors.email && <div style={{ color: 'red' }}>{errors.email}</div>}
-        </div>
+  <input
+    type="email"
+    name="email"
+    placeholder="Email"
+    value={values.email}
+    onChange={handleChange}
+    onBlur={handleBlur}
+    className="login"
+  />
+  {touched.email && errors.email && <div className="error-message">{errors.email}</div>}
+</div>
 
-        <div>
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            value={values.password}
-            onChange={handleChange}
-            onBlur={handleBlur}
-          />
-          {errors.password && <div style={{ color: 'red' }}>{errors.password}</div>}
-        </div>
+<div>
+  <input
+    type="password"
+    name="password"
+    placeholder="Password"
+    value={values.password}
+    onChange={handleChange}
+    onBlur={handleBlur}
+    className="login"
+  />
+  {touched.password && errors.password && <div className="error-message">{errors.password}</div>}
+</div>
 
-        <button type="submit" disabled={loading}>
+        <button type="submit" disabled={loading} className='loginbutton'>
           {loading ? 'Yükleniyor...' : 'Giriş Yap'}
         </button>
       </form>
