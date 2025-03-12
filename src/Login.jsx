@@ -1,15 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useFormik } from 'formik';
 import axios from 'axios';
 import { Loginyupp } from './schemas/Loginyupp';
 import { useNavigate } from 'react-router-dom';
-import styles from './assets/Login.module.css'; // Burada stil dosyasını import ediyoruz
+import styles from './assets/Login.module.css'; // CSS dosyasını import ettik
 
 function Login() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const { values, errors, touched, handleChange, handleBlur, handleSubmit } = useFormik({
+  useEffect(() => {
+    axios.interceptors.request.use(
+      (config) => {
+        const token = localStorage.getItem('jwt_token');
+        if (token) {
+          config.headers['Authorization'] = `Bearer ${token}`;
+        }
+        return config;
+      },
+      (error) => Promise.reject(error)
+    );
+  }, []);
+
+  const formik = useFormik({
     initialValues: {
       email: "",
       password: "",
@@ -19,19 +32,15 @@ function Login() {
       setLoading(true);
       try {
         const response = await axios.post("api/login", values);
-        
         const { token, role } = response.data;
+
         localStorage.setItem('jwt_token', token);
+        console.log("Giriş başarılı:", role);
 
-        if (role === "a") {
-          navigate("/Adminlogin");
-        } else {
-          navigate("/Anasayfa");
-        }
+        navigate(role === "a" ? "/Adminlogin" : "/Anasayfa");
       } catch (error) {
-        console.log("Hata var", error);
-
-        if (error.response && error.response.status === 404) {
+        console.error("Hata var", error);
+        if (error.response?.status === 404) {
           alert("Hesap bulunamadı! Kayıt olmanız gerek.");
           navigate("/register");
         }
@@ -41,34 +50,25 @@ function Login() {
     }
   });
 
-  axios.interceptors.request.use(
-    (config) => {
-      const token = localStorage.getItem('jwt_token');
-      if (token) {
-        config.headers['Authorization'] = `Bearer ${token};`
-      }
-      return config;
-    },
-    (error) => {
-      return Promise.reject(error);
-    }
-  );
-
   return (
     <div className={styles.loginbody}>
-      <form onSubmit={handleSubmit} className={styles.loginform}>
+      <form onSubmit={formik.handleSubmit} className={styles.loginform}>
         <p className={styles.logintitle}>Login</p>
+
         <div>
           <input
             type="email"
             name="email"
             placeholder="Email"
-            value={values.email}
-            onChange={handleChange}
-            onBlur={handleBlur}
+            autoComplete="username"
+            value={formik.values.email}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
             className={styles.login}
           />
-          {touched.email && errors.email && <div className={styles.error-message}>{errors.email}</div>}
+          {formik.touched.email && formik.errors.email && (
+            <div className={styles.errorMessage}>{formik.errors.email}</div>
+          )}
         </div>
 
         <div>
@@ -76,12 +76,15 @@ function Login() {
             type="password"
             name="password"
             placeholder="Password"
-            value={values.password}
-            onChange={handleChange}
-            onBlur={handleBlur}
+            autoComplete="current-password"
+            value={formik.values.password}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
             className={styles.login}
           />
-          {touched.password && errors.password && <div className={styles.error-message}>{errors.password}</div>}
+          {formik.touched.password && formik.errors.password && (
+            <div className={styles.errorMessage}>{formik.errors.password}</div>
+          )}
         </div>
 
         <button type="submit" disabled={loading} className={styles.loginbutton}>
