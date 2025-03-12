@@ -8,6 +8,7 @@ import styles from "./assets/Register.module.css"; // Güncellenmiş CSS dosyas�
 function RegisterForm() {
   const { values, errors, touched, handleChange, handleBlur, handleSubmit } = useFormik({
     initialValues: {
+      name:"",
       email: "",
       age: "",
       password: "",
@@ -16,7 +17,7 @@ function RegisterForm() {
     validationSchema: RegisterSchema,
     onSubmit: async (values) => {
       try {
-        const response = await axios.post("/register", values);
+        const response = await axios.post("api/register", values);
         console.log(response.data);
       } catch (error) {
         console.error("Kayıt işlemi başarısız oldu:", error);
@@ -29,6 +30,19 @@ function RegisterForm() {
       <form onSubmit={handleSubmit} className={styles.loginform}>
         <p className={styles.logintitle}>Kayıt Ol</p>
 
+        <div>
+          <input
+            type="text"
+            name="name"
+            placeholder="Adiniz"
+            value={values.name}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            autoComplete="name"
+            className={styles.login}
+          />
+          {touched.name && errors.name && <div className={styles.errorMessage}>{errors.name}</div>}
+        </div>
         <div>
           <input
             type="email"
