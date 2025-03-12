@@ -3,7 +3,7 @@ import { useFormik } from 'formik';
 import axios from 'axios';
 import { Loginyupp } from './schemas/Loginyupp';
 import { useNavigate } from 'react-router-dom';
-import './assets/login.css';
+import styles from './assets/Login.module.css'; // Burada stil dosyasını import ediyoruz
 
 function Login() {
   const [loading, setLoading] = useState(false);
@@ -55,41 +55,41 @@ function Login() {
   );
 
   return (
-    <>
-      <form onSubmit={handleSubmit} className="loginform">
-        <p className="logintitle">Login</p>
+    <div className={styles.loginbody}>
+      <form onSubmit={handleSubmit} className={styles.loginform}>
+        <p className={styles.logintitle}>Login</p>
         <div>
-  <input
-    type="email"
-    name="email"
-    placeholder="Email"
-    value={values.email}
-    onChange={handleChange}
-    onBlur={handleBlur}
-    className="login"
-  />
-  {touched.email && errors.email && <div className="error-message">{errors.email}</div>}
-</div>
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            value={values.email}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            className={styles.login}
+          />
+          {touched.email && errors.email && <div className={styles.error-message}>{errors.email}</div>}
+        </div>
 
-<div>
-  <input
-    type="password"
-    name="password"
-    placeholder="Password"
-    value={values.password}
-    onChange={handleChange}
-    onBlur={handleBlur}
-    className="login"
-  />
-  {touched.password && errors.password && <div className="error-message">{errors.password}</div>}
-</div>
+        <div>
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            value={values.password}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            className={styles.login}
+          />
+          {touched.password && errors.password && <div className={styles.error-message}>{errors.password}</div>}
+        </div>
 
-        <button type="submit" disabled={loading} className='loginbutton'>
+        <button type="submit" disabled={loading} className={styles.loginbutton}>
           {loading ? 'Yükleniyor...' : 'Giriş Yap'}
         </button>
       </form>
-    </>
+    </div>
   );
 }
 
-export default Login;
+export default Login;
