@@ -3,7 +3,7 @@ import { useFormik } from 'formik';
 import axios from 'axios';
 import { Loginyupp } from './schemas/Loginyupp';
 import { useNavigate } from 'react-router-dom';
-import styles from './assets/Login.module.css'; // CSS dosyasını import ettik
+import styles from './assets/Login.module.css'; 
 
 function Login() {
   const [loading, setLoading] = useState(false);

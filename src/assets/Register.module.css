@@ -1,0 +1,151 @@
+/* Register.module.css */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(to bottom right, #E57373, #4A148C);
+    font-family: 'Poppins', sans-serif;
+  }
+  
+  /* Form Arka Planı - Cam Efekti */
+  .loginbody {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  .loginform {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 400px;
+  }
+  
+  /* Başlık */
+  .logintitle {
+    font-size: 32px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 20px;
+  }
+  
+  /* Input Alanları */
+  .login {
+    width: 100%;
+    height: 50px;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    color: white;
+    font-size: 16px;
+    outline: none;
+    transition: 0.3s;
+  }
+  
+  .login:focus {
+    background: rgba(255, 255, 255, 0.3);
+    border-color: white;
+  }
+  
+  /* Placeholder Rengi */
+  ::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 14px;
+  }
+  
+  /* Hata Mesajları */
+  .errorMessage {
+    color: #ff4d4d;
+    font-size: 14px;
+    margin-top: -5px;
+    text-align: left;
+    width: 100%;
+  }
+  
+  /* Kayıt Ol Butonu */
+  .loginbutton {
+    width: 100%;
+    height: 50px;
+    border: none;
+    border-radius: 8px;
+    background: #D32F2F;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    text-transform: uppercase;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: 0.3s;
+  }
+  
+  .loginbutton:hover {
+    background: #C2185B;
+    transform: scale(1.05);
+  }
+  
+  .loginbutton:disabled {
+    background: #BDBDBD;
+    cursor: not-allowed;
+  }
+  
+  /* Footer (Giriş Yap Linki) */
+  .loginfooter {
+    margin-top: 15px;
+    color: white;
+    font-size: 14px;
+  }
+  
+  .loginlink {
+    color: #FFD700;
+    font-weight: bold;
+    text-decoration: none;
+    transition: 0.3s;
+  }
+  
+  .loginlink:hover {
+    text-decoration: underline;
+  }
+  
+  /* Responsive Tasarım */
+  @media (max-width: 500px) {
+    .loginform {
+      padding: 20px;
+      width: 90%;
+    }
+  
+    .logintitle {
+      font-size: 26px;
+    }
+  
+    .login {
+      font-size: 14px;
+    }
+  
+    .loginbutton {
+      font-size: 16px;
+    }
+  
+    .loginfooter {
+      font-size: 12px;
+    }
+  }
+  

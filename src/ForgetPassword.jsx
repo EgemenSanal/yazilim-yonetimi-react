@@ -1,11 +1,10 @@
-import axios from 'axios'
-import { useFormik } from 'formik'
-import React from 'react'
+import axios from 'axios';
+import { useFormik } from 'formik';
+import React from 'react';
 import { Forgetpasswordyup } from './schemas/ForgetPasswordyup';
-
+import styles from './assets/Login.module.css'; // CSS dosyasını import ettik
 
 function ForgetPassword() {
-
   const { values, errors, touched, handleChange, handleBlur, handleSubmit } = useFormik({
     initialValues: {
       email: "",
@@ -22,47 +21,60 @@ function ForgetPassword() {
       }
     },
   });
-  
 
   return (
-  <>
- <form onSubmit={handleSubmit}>
-  <input
-    type="email"
-    name="email"
-    value={values.email}
-    onChange={handleChange}
-    onBlur={handleBlur} 
-    placeholder="E-posta"
-  />
-  {touched.email && errors.email && <div>{errors.email}</div>}
+    <div className={styles.loginbody}>
+      <form onSubmit={handleSubmit} className={styles.loginform}>
+        <p className={styles.logintitle}>Şifreyi Sıfırla</p>
 
-  <input
-    type="password"
-    name="password"
-    value={values.password}
-    onChange={handleChange}
-    onBlur={handleBlur} 
-    placeholder="Yeni Şifre"
-  />
-  {touched.password && errors.password && <div>{errors.password}</div>}
+        <div>
+          <input
+            type="email"
+            name="email"
+            value={values.email}
+            onChange={handleChange}
+            onBlur={handleBlur} 
+            placeholder="E-posta"
+            autoComplete="email"
+            className={styles.login}
+          />
+          {touched.email && errors.email && <div className={styles.errorMessage}>{errors.email}</div>}
+        </div>
 
-  <input
-    type="password"
-    name="passwordagain"
-    value={values.passwordagain}
-    onChange={handleChange}
-    onBlur={handleBlur} 
-    placeholder="Şifre Tekrar"
-  />
-  {touched.passwordagain && errors.passwordagain && <div>{errors.passwordagain}</div>}
+        <div>
+          <input
+            type="password"
+            name="password"
+            value={values.password}
+            onChange={handleChange}
+            onBlur={handleBlur} 
+            placeholder="Yeni Şifre"
+            autoComplete="new-password"
+            className={styles.login}
+          />
+          {touched.password && errors.password && <div className={styles.errorMessage}>{errors.password}</div>}
+        </div>
 
-  <button type="submit">Şifreyi Güncelle</button>
-</form>
+        <div>
+          <input
+            type="password"
+            name="passwordagain"
+            value={values.passwordagain}
+            onChange={handleChange}
+            onBlur={handleBlur} 
+            placeholder="Şifre Tekrar"
+            autoComplete="new-password"
+            className={styles.login}
+          />
+          {touched.passwordagain && errors.passwordagain && <div className={styles.errorMessage}>{errors.passwordagain}</div>}
+        </div>
 
-  
-  </>
-  )
+        <button type="submit" className={styles.loginbutton}>
+          Şifreyi Güncelle
+        </button>
+      </form>
+    </div>
+  );
 }
 
-export default ForgetPassword
+export default ForgetPassword;

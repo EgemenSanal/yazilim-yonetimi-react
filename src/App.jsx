@@ -18,7 +18,7 @@ function App() {
           <Route path="/adminpanel" element={<AdminPanel />} />
           <Route path="/adminpanel/kitap-ekle" element={<AdminKitapEkleme />} />
           <Route path="/adminpanel/kitap-duzenle" element={<AdminKitapDuzenleme />} />
-
+        
         </Routes>
       </div>
     </Router>
