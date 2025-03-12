@@ -1,150 +1,126 @@
-import { useFormik } from "formik";
 import React, { useState } from "react";
-import KitapEklemeSchema from "../schemas/Kitapekleme";
+import { useFormik } from "formik";
 import axios from "axios";
 
-function AdminKitapEkleme() {
-  const [coverImage, setCoverImage] = useState(null); 
-  const [pdfFile, setPdfFile] = useState(null); 
+export default function AdminKitapEkleme() {
+  const [coverImage, setCoverImage] = useState(null);
+  const [pdfFile, setPdfFile] = useState(null);
 
-  const { values, handleSubmit, handleChange, handleBlur, setFieldValue } =
-    useFormik({
-      initialValues: {
-        title: "",
-        author: "",
-        description: "",
-        publisher: "",
-        year: "",
-        file_path: "",
-        cover_image: null,
-        pages: null, 
-        age_limit: "",
-      },
-      validationSchema: KitapEklemeSchema,
-      onSubmit: async (values) => {
-        try {
-          const token = localStorage.getItem("token");
+  const formik = useFormik({
+    initialValues: {
+      title: "",
+      author: "",
+      description: "",
+      publisher: "",
+      year: "",
+      age_limit: "",
+    },
+    onSubmit: async (values, { resetForm }) => {
+      try {
+        const token = localStorage.getItem("jwt_token");
 
-       
-          const formData = new FormData();
-          Object.keys(values).forEach((key) => {
-            formData.append(key, values[key]);
-          });
+        
+        const formData = new FormData();
+        formData.append("title", values.title);
+        formData.append("author", values.author);
+        formData.append("description", values.description);
+        formData.append("publisher", values.publisher);
+        formData.append("year", values.year);
+        formData.append("age_limit", values.age_limit);
 
-  
-          if (coverImage) {
-            formData.append("cover_image", coverImage);
-          }
-          if (pdfFile) {
-            formData.append("pages", pdfFile);
-          }
-
-          const response = await axios.post("/kitaplerekle", formData, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "multipart/form-data",
-            },
-          });
-
-          console.log("Başarılı:", response.data);
-        } catch (error) {
-          console.error("Hata oluştu:", error.response?.data || error.message);
+        if (coverImage) {
+          formData.append("cover_image", coverImage);
         }
-      },
-    });
 
- 
-  const handleCoverChange = (event) => {
-    const file = event.target.files
-    if (file) {
-      setCoverImage(file);
-      setFieldValue("cover_image", file);
-    }
-  };
+        if (pdfFile) {
+          formData.append("pdf_file", pdfFile);
+        }
 
+        const response = await axios.post("http://localhost:8000/api/books", formData, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data",
+          },
+        });
 
-  const handlePdfChange = (event) => {
-    const file = event.target.files[0];
-    if (file && file.type === "application/pdf") {
-      setPdfFile(file);
-      setFieldValue("pages", file);
-    } else {
-      alert("Lütfen bir PDF dosyası yükleyin!");
-    }
-  };
+        console.log("Başarılı:", response.data);
+        alert("Kitap başarıyla eklendi!");
+
+        resetForm();
+        setCoverImage(null);
+        setPdfFile(null);
+      } catch (error) {
+        console.error("Hata oluştu:", error.response?.data || error.message);
+        alert("Kitap eklenirken bir hata oluştu.");
+      }
+    },
+  });
 
   return (
-    <>
-      <form onSubmit={handleSubmit} encType="multipart/form-data">
-        <input
-          type="text"
-          name="title"
-          placeholder="title"
-          value={values.title}
-          onBlur={handleBlur}
-          onChange={handleChange}
-        />
-        <input
-          type="text"
-          name="author"
-          placeholder="author"
-          value={values.author}
-          onBlur={handleBlur}
-          onChange={handleChange}
-        />
-        <input
-          type="text"
-          name="description"
-          placeholder="description"
-          value={values.description}
-          onBlur={handleBlur}
-          onChange={handleChange}
-        />
-        <input
-          type="text"
-          name="publisher"
-          placeholder="yayıncı"
-          value={values.publisher}
-          onBlur={handleBlur}
-          onChange={handleChange}
-        />
-        <input
-          type="date"
-          name="year"
-          placeholder="yıl"
-          value={values.year}
-          onChange={handleChange}
-          onBlur={handleBlur}
-        />
-        <input
-          type="text"
-          name="file_path"
-          placeholder="file_path"
-          value={values.file_path}
-          onBlur={handleBlur}
-          onChange={handleChange}
-        />
-        <input
-          type="text"
-          name="age_limit"
-          placeholder="yaş sınırı"
-          value={values.age_limit}
-          onChange={handleChange}
-          onBlur={handleBlur}
-        />
+    <form onSubmit={formik.handleSubmit} encType="multipart/form-data">
+      <input
+        type="text"
+        name="title"
+        placeholder="Kitap Başlığı"
+        value={formik.values.title}
+        onChange={formik.handleChange}
+        onBlur={formik.handleBlur}
+      />
+      <input
+        type="text"
+        name="author"
+        placeholder="Yazar"
+        value={formik.values.author}
+        onChange={formik.handleChange}
+        onBlur={formik.handleBlur}
+      />
+      <textarea
+        name="description"
+        placeholder="Açıklama"
+        value={formik.values.description}
+        onChange={formik.handleChange}
+        onBlur={formik.handleBlur}
+      />
+      <input
+        type="text"
+        name="publisher"
+        placeholder="Yayıncı"
+        value={formik.values.publisher}
+        onChange={formik.handleChange}
+        onBlur={formik.handleBlur}
+      />
+      <input
+        type="number"
+        name="year"
+        placeholder="Yayın Yılı"
+        value={formik.values.year}
+        onChange={formik.handleChange}
+        onBlur={formik.handleBlur}
+      />
+      <input
+        type="text"
+        name="age_limit"
+        placeholder="Yaş Sınırı"
+        value={formik.values.age_limit}
+        onChange={formik.handleChange}
+        onBlur={formik.handleBlur}
+      />
 
+      <label>Kapak Resmi:</label>
+      <input
+        type="file"
+        accept="image/*"
+        onChange={(e) => setCoverImage(e.target.files[0])}
+      />
 
-        <label>Kapak Resmi Yükle:</label>
-        <input type="file" name="cover_image" accept="image/*" onChange={handleCoverChange} />
+      <label>PDF Dosyası:</label>
+      <input
+        type="file"
+        accept="application/pdf"
+        onChange={(e) => setPdfFile(e.target.files[0])}
+      />
 
-    
-        <label>PDF Yükle:</label>
-        <input type="file" name="pages" accept="application/pdf" onChange={handlePdfChange} />
-
-        <button type="submit">Ekle</button>
-      </form>
-    </>
+      <button type="submit">Kitap Ekle</button>
+    </form>
   );
 }
-
-export default AdminKitapEkleme;

@@ -18,7 +18,7 @@ function Login() {
     onSubmit: async (values) => {
       setLoading(true);
       try {
-        const response = await axios.post("/login", values);
+        const response = await axios.post("api/login", values);
         
         const { token, role } = response.data;
         localStorage.setItem('jwt_token', token);
@@ -45,7 +45,7 @@ function Login() {
     (config) => {
       const token = localStorage.getItem('jwt_token');
       if (token) {
-        config.headers['Authorization'] = `Bearer ${token}`;
+        config.headers['Authorization'] = `Bearer ${token};`
       }
       return config;
     },
@@ -92,4 +92,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default Login;
