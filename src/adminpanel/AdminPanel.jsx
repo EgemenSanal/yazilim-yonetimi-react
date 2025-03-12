@@ -17,7 +17,7 @@ function AdminPanel() {
     };
 
     const kitapKisitlama = () => {
-        navigate("/adminpanel/kitap-kisitla");
+        navigate("/adminpanel/kitap-duzenle");
     };
 
     const kitaplariGoruntule = () => {
@@ -37,7 +37,7 @@ function AdminPanel() {
             </div>
             <div className="image-container" onClick={kitapKisitlama}>
                 <img src={adminImage2} className="admin-image" alt="Age Kısıtla" />
-                <div className="hover-text">Age Kısıtla</div>
+                <div className="hover-text">Kitap Düzenle</div>
             </div>
             <div className="image-container" onClick={kitaplariGoruntule}>
                 <img src={adminImage2} className="admin-image" alt="Kitaplarımı Görüntüle" />

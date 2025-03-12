@@ -4,6 +4,7 @@ import Login from "./Login";
 import ForgetPassword from "./ForgetPassword";
 import AdminPanel from "./adminpanel/AdminPanel";
 import AdminKitapEkleme from "./adminpanel/AdminKitapEkleme";
+import AdminKitapDuzenleme from "./adminpanel/AdminKitapDuzenleme";
 
 
 function App() {
@@ -16,7 +17,8 @@ function App() {
           <Route path="/forgetPassword" element={<ForgetPassword />} />
           <Route path="/adminpanel" element={<AdminPanel />} />
           <Route path="/adminpanel/kitap-ekle" element={<AdminKitapEkleme />} />
-      
+          <Route path="/adminpanel/kitap-duzenle" element={<AdminKitapDuzenleme />} />
+
         </Routes>
       </div>
     </Router>
