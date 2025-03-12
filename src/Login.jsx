@@ -20,12 +20,6 @@ function Login() {
       try {
         const response = await axios.post("api/login", values);
         
- main
-        const { token } = response.data;
-        localStorage.setItem('jwt_token', token); 
-      
-        //navigate("/Adminlogin"); // Admin login paneline yönlendiriyoruz
-
         const { token, role } = response.data;
         localStorage.setItem('jwt_token', token);
 
@@ -34,7 +28,6 @@ function Login() {
         } else {
           navigate("/Anasayfa");
         }
-main
       } catch (error) {
         console.log("Hata var", error);
 
@@ -52,7 +45,7 @@ main
     (config) => {
       const token = localStorage.getItem('jwt_token');
       if (token) {
-        config.headers['Authorization'] = `Bearer ${token}`;
+        config.headers['Authorization'] = `Bearer ${token};`
       }
       return config;
     },
@@ -99,4 +92,4 @@ main
   );
 }
 
-export default Login;
+export default Login;
