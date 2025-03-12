@@ -17,13 +17,12 @@ function Login() {
     onSubmit: async (values) => {
       setLoading(true);
       try {
-        const response = await axios.post("/login", values);
+        const response = await axios.post("api/login", values);
         
         const { token } = response.data;
         localStorage.setItem('jwt_token', token); 
-
       
-        navigate("/Adminlogin"); // Admin login paneline yönlendiriyoruz
+        //navigate("/Adminlogin"); // Admin login paneline yönlendiriyoruz
       } catch (error) {
         console.log("Hata var", error);
         
